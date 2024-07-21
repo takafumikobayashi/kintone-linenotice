@@ -24,7 +24,7 @@
       "css/config.css"
     ],
     "required_params": [
-      "channelAccessToken", "triggrType", "triggerField"
+      "channelAccessToken", "triggrType", "triggerField", "lineMessage"
     ]
   },
   "name": {
@@ -32,7 +32,8 @@
     "ja": "LINE通知プライグイン"
   },
   "description": {
-    "en": "linenotice"
+    "ja":"日時あるいはボタンクリックのトリガーでLINE公式チャンネルに通知を行うことができるプラグインです。",
+    "en": "This is a plugin that allows you to send notifications to LINE official channels based on date and time or button click triggers."
   },
   "mobile": {
     "js": [

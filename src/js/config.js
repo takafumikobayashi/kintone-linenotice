@@ -1,14 +1,19 @@
 (function (PLUGIN_ID) {
   const formEl = document.querySelector('.js-submit-settings');
   const cancelButtonEl = document.querySelector('.js-cancel-button');
+  const channelAccessTokenEl = document.querySelector('.kintoneplugin-input-text');
+  const lineMessageEl = document.querySelector('.kintoneplugin-input-text-resizable');
   const dateTimeRowEl = document.querySelector('.js-datetime-row');
-  if (!(formEl && cancelButtonEl && dateTimeRowEl)) {
+  if (!(formEl && cancelButtonEl && channelAccessTokenEl && lineMessageEl && dateTimeRowEl)) {
     throw new Error('Required elements do not exist.');
   }
 
   const config = kintone.plugin.app.getConfig(PLUGIN_ID);
-  if (config.message) {
-    messageEl.value = config.message;
+  if (config.channelAccessToken) {
+    channelAccessTokenEl.value = config.channelAccessToken;
+  }
+  if (config.lineMessage) {
+    lineMessageEl.value = config.lineMessage
   }
 
   let appId = kintone.app.getId();
@@ -63,17 +68,41 @@
   formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     let channelAccessToken = formEl.querySelector('.kintoneplugin-input-text').value;
-    let radio1 = formEl.querySelector('.radio-1').value;
+    let radio1 = formEl.querySelector('.radio-1');
     let triggrType = "0"
     let triggerField = formEl.querySelector('.field-selection-area select').value;
+    let lineMessage = formEl.querySelector('.kintoneplugin-input-text-resizable').value;
     if (radio1.checked) {
       triggrType = "1"
-      triggerField = formEl.querySelector('.field-selection-area').value;
+      triggerField = formEl.querySelector('.field-selection-area select').value;
     } else {
+      triggrType = "0"
       triggerField = "none"
     }
-    
-    kintone.plugin.app.setConfig({ channelAccessToken: channelAccessToken, triggrType: triggrType, triggerField: triggerField }, () => {      
+
+    //チェック処理
+    let lineChannelAccesstokenLength = 172
+    if (channelAccessToken.length < lineChannelAccesstokenLength) {
+      swal({
+        title: 'エラー',
+        text: 'チャンネルアクセストークンは半角英数字172文字以上になります。',
+        icon: 'error',
+        button: 'OK'
+      })
+      return;
+    }
+
+    if ((lineMessage === undefined) || (lineMessage === "")) {
+      swal({
+        title: 'エラー',
+        text: '通知メッセージは必ず指定をしてください。',
+        icon: 'error',
+        button: 'OK'
+      })
+      return;
+    }
+
+    kintone.plugin.app.setConfig({ channelAccessToken: channelAccessToken, triggrType: triggrType, triggerField: triggerField, lineMessage: lineMessage }, () => {      
       swal({
         title: '更新しました。',
         text: '変更した設定を反映するには、「アプリの設定」画面に戻り 「アプリの更新」ボタンをクリックします。',

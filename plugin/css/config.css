@@ -5,3 +5,24 @@
 .kintoneplugin-input-text {
   width: 20em;
 }
+
+/* 可変可能なテキストボックスのスタイル */
+.kintoneplugin-input-text-resizable {
+  width: 20em; /* テキストボックスの幅 */
+  padding: 0.5em; /* 内側の余白 */
+  border-radius: 4px; /* 角の丸み */
+  font-size: 1em; /* フォントサイズ */
+  resize: both; /* 縦横両方向のリサイズを可能に */
+  overflow: auto; /* オーバーフローした内容を表示 */
+  box-sizing: border-box; /* ボックスのサイズを指定 */
+  border: 1px solid #e3e7e8;
+  background-color: #fff;
+  box-shadow: 4px 4px 12px #f5f5f5 inset, -4px -4px 12px #f5f5f5 inset;
+  color: #a7a7a7;
+}
+
+.kintoneplugin-input-text-resizable:focus {
+  background-color: #e2f2fe;
+  box-shadow: none;
+  color: #000;
+}
