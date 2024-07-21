@@ -4,7 +4,8 @@
   "type": "APP",
   "desktop": {
     "js": [
-      "js/desktop.js"
+      "js/desktop.js",
+      "https://js.cybozu.com/sweetalert/v2.1.2/sweetalert.min.js"
     ],
     "css": [
       "css/51-modern-default.css",
@@ -15,14 +16,15 @@
   "config": {
     "html": "html/config.html",
     "js": [
-      "js/config.js"
+      "js/config.js",
+      "https://js.cybozu.com/sweetalert/v2.1.2/sweetalert.min.js"
     ],
     "css": [
       "css/51-modern-default.css",
       "css/config.css"
     ],
     "required_params": [
-      "message"
+      "channelAccessToken", "triggrType", "triggerField"
     ]
   },
   "name": {
