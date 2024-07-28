@@ -3,7 +3,9 @@
 }
 
 .kintoneplugin-input-text {
-  width: 20em;
+  width: 100%;
+  padding-right: 3.5em; /* アイコン分の余白を追加 */
+  box-sizing: border-box; /* パディングを含める */
 }
 
 /* 可変可能なテキストボックスのスタイル */
@@ -29,4 +31,19 @@
 
 .kintoneplugin-title {
   margin-top: 30px; /* 必要に応じて値を調整 */
+}
+
+.kintoneplugin-input-outer {
+  position: relative;
+  width: 75%; /* 親要素に対して100%の幅 */
+}
+
+.toggle-visibility {
+  position: absolute;
+  right: 0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 24px; /* アイコンのサイズ */
+  color: #888; /* アイコンの色 */
 }

@@ -178,4 +178,16 @@
   cancelButtonEl.addEventListener('click', () => {
     window.location.href = '../../' + kintone.app.getId() + '/plugin/';
   });
+
+  document.getElementById('toggleVisibilityIcon').addEventListener('click', function() {
+    const input = document.getElementById('channelAccessToken');
+    if (input.type === 'password') {
+      input.type = 'text';
+      this.textContent = 'visibility';
+    } else {
+      input.type = 'password';
+      this.textContent = 'visibility_off';
+    }
+  });
+
 })(kintone.$PLUGIN_ID);
