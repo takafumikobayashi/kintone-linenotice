@@ -1,3 +1,6 @@
+# Secret KEY
+*.ppk
+
 # Logs
 logs
 *.log
