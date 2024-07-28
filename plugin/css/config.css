@@ -26,3 +26,7 @@
   box-shadow: none;
   color: #000;
 }
+
+.kintoneplugin-title {
+  margin-top: 30px; /* 必要に応じて値を調整 */
+}

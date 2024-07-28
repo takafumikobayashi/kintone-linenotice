@@ -24,7 +24,7 @@
       "css/config.css"
     ],
     "required_params": [
-      "channelAccessToken", "triggerType", "triggerField", "lineMessage", "processedField"
+      "channelAccessToken", "triggerType", "triggerField", "lineMessage", "processedField", "titleField", "addStamp"
     ]
   },
   "name": {

@@ -27,6 +27,16 @@
   let selectMenuProcessed = document.createElement('select');
   selectMenuProcessed.id = 'field-selection';
   selectMenuProcessed.className = 'field-selection';
+
+  // タイトルとなるフィールドの指定
+  let selectMenuTitle = document.createElement('select');
+  selectMenuProcessed.id = 'field-selection';
+  selectMenuProcessed.className = 'field-selection';
+  // 「なし」の指定
+  let option_0 = document.createElement('option'); // 新しい<option>エレメントを作成
+  option_0.value = "none";  // <option>のvalueを設定
+  option_0.textContent = "（指定しない）";  // <option>のテキストを設定
+  selectMenuTitle.appendChild(option_0);  // <select>メニューに<option>を追加
   
   //日時項目の取得
   kintone.api('/k/v1/form', 'GET', {app: appId}, function(resp) {
@@ -55,21 +65,32 @@
         selectMenuProcessed.appendChild(option);  // <select>メニューに<option>を追加
       }
 
+      const targetTypes = ['SINGLE_LINE_TEXT', 'MULTI_LINE_TEXT'];
+      if (targetTypes.includes(field.type)) {
+        let option = document.createElement('option'); // 新しい<option>エレメントを作成
+        option.value = field.code;  // <option>のvalueを設定
+        option.textContent = field.label;  // <option>のテキストを設定
+        if (field.code === config.titleField) {
+          option.selected = true;  // <option>を選択済みにする
+        }
+        selectMenuTitle.appendChild(option);  // <select>メニューに<option>を追加
+      }
+
     }
 
     // <select>メニューをconfig画面の適切な場所に追加
     formEl.querySelector('.field-selection-area').appendChild(selectMenu);
     formEl.querySelector('.field-selection-area-processed').appendChild(selectMenuProcessed);
-
+    formEl.querySelector('.field-selection-area-title').appendChild(selectMenuTitle);
 
   }, function(error) {
       console.error('フォーム情報の取得に失敗しました。:', error);
   });
 
   // 初期表示の設定
-  if (config.triggrType === "0"){
+  if (config.triggerType == "0"){
     document.querySelector('.radio-0').checked = true
-  } else if (config.triggrType === "1") {
+  } else if (config.triggerType == "1") {
     document.querySelector('.radio-1').checked = true
   }
 
@@ -77,6 +98,12 @@
     dateTimeRowEl.style.display = 'block';
   } else {
     dateTimeRowEl.style.display = 'none';
+  }
+
+  if (config.addStamp == "1"){
+    document.querySelector('.checkbox-0').checked = true
+  } else {
+    document.querySelector('.checkbox-0').checked = false
   }
 
   // field-selection_subtableのselect要素が変更されたときの処理
@@ -106,6 +133,12 @@
       triggerType = "0"
       triggerField = "none"
     }
+    let titleField = formEl.querySelector('.field-selection-area-title select').value;
+    let check0 = formEl.querySelector('.checkbox-0');
+    let addStamp = "0"
+    if (check0.checked) {
+      addStamp = "1"
+    }
 
     //チェック処理
     let lineChannelAccesstokenLength = 172
@@ -129,7 +162,7 @@
       return;
     }
 
-    kintone.plugin.app.setConfig({ channelAccessToken: channelAccessToken, triggerType: triggerType, triggerField: triggerField, lineMessage: lineMessage, processedField: processedField }, () => {      
+    kintone.plugin.app.setConfig({ channelAccessToken: channelAccessToken, triggerType: triggerType, triggerField: triggerField, lineMessage: lineMessage, processedField: processedField, titleField: titleField, addStamp: addStamp }, () => {      
       swal({
         title: '更新しました。',
         text: '変更した設定を反映するには、「アプリの設定」画面に戻り 「アプリの更新」ボタンをクリックします。',
