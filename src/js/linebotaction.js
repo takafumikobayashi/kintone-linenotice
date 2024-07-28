@@ -1,9 +1,4 @@
-export function lineBotAction(channelAccessToken, lineMessage, processedField, record, titleField, addStamp, actionType) {
-  
-  let appId = kintone.app.getId();
-  if (actionType == 'mobile') {
-    appId = kintone.mobile.app.getId();
-  }
+export function lineBotAction(channelAccessToken, lineMessage, processedField, record, titleField, addStamp, appId) {
 
   // 初期設定
   const url = 'https://api.line.me/v2/bot/message/broadcast';

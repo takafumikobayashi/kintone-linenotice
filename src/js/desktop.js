@@ -11,6 +11,9 @@ import { lineBotAction } from "./linebotaction";
         return event; // 既にボタンがある場合は何もしない
     }
 
+    //appIdの取得
+    let appId = kintone.app.getId();
+
     // configで設定したフィールドコードを取得
     const config = kintone.plugin.app.getConfig(PLUGIN_ID);
     const channelAccessToken = config.channelAccessToken
@@ -58,7 +61,7 @@ import { lineBotAction } from "./linebotaction";
           .then((value) => {
               switch (value) {
                   case "execute":
-                      lineBotAction(channelAccessToken, lineMessage, processedField, record, titleField, addStamp, 'desktop');
+                      lineBotAction(channelAccessToken, lineMessage, processedField, record, titleField, addStamp, appId);
                       break;
                   default:
                       console.log('LINE通知がキャンセルされました。');
@@ -92,7 +95,7 @@ import { lineBotAction } from "./linebotaction";
         .then((value) => {
             switch (value) {
                 case "execute":
-                    lineBotAction(channelAccessToken, lineMessage, processedField, record, titleField, addStamp, 'desktop');
+                    lineBotAction(channelAccessToken, lineMessage, processedField, record, titleField, addStamp, appId);
                     break;
                 default:
                     console.log('LINE通知がキャンセルされました。');
