@@ -17,9 +17,16 @@
   }
 
   let appId = kintone.app.getId();
+
+  // トリガーとなるフィールドの指定
   let selectMenu = document.createElement('select');
   selectMenu.id = 'field-selection';
   selectMenu.className = 'field-selection';
+
+  // 通知済であることを判断するフィールドの指定
+  let selectMenuProcessed = document.createElement('select');
+  selectMenuProcessed.id = 'field-selection';
+  selectMenuProcessed.className = 'field-selection';
   
   //日時項目の取得
   kintone.api('/k/v1/form', 'GET', {app: appId}, function(resp) {
@@ -37,16 +44,35 @@
         }
         selectMenu.appendChild(option);  // <select>メニューに<option>を追加
       }
+
+      if (field.type === 'CHECK_BOX') {
+        let option = document.createElement('option'); // 新しい<option>エレメントを作成
+        option.value = field.code;  // <option>のvalueを設定
+        option.textContent = field.label;  // <option>のテキストを設定
+        if (field.code === config.processedField) {
+          option.selected = true;  // <option>を選択済みにする
+        }
+        selectMenuProcessed.appendChild(option);  // <select>メニューに<option>を追加
+      }
+
     }
 
     // <select>メニューをconfig画面の適切な場所に追加
     formEl.querySelector('.field-selection-area').appendChild(selectMenu);
+    formEl.querySelector('.field-selection-area-processed').appendChild(selectMenuProcessed);
+
 
   }, function(error) {
       console.error('フォーム情報の取得に失敗しました。:', error);
   });
 
   // 初期表示の設定
+  if (config.triggrType === "0"){
+    document.querySelector('.radio-0').checked = true
+  } else if (config.triggrType === "1") {
+    document.querySelector('.radio-1').checked = true
+  }
+
   if (document.querySelector('.radio-1').checked) {
     dateTimeRowEl.style.display = 'block';
   } else {
@@ -69,14 +95,15 @@
     e.preventDefault();
     let channelAccessToken = formEl.querySelector('.kintoneplugin-input-text').value;
     let radio1 = formEl.querySelector('.radio-1');
-    let triggrType = "0"
+    let triggerType = "0"
     let triggerField = formEl.querySelector('.field-selection-area select').value;
     let lineMessage = formEl.querySelector('.kintoneplugin-input-text-resizable').value;
+    let processedField = formEl.querySelector('.field-selection-area-processed select').value;
     if (radio1.checked) {
-      triggrType = "1"
+      triggerType = "1"
       triggerField = formEl.querySelector('.field-selection-area select').value;
     } else {
-      triggrType = "0"
+      triggerType = "0"
       triggerField = "none"
     }
 
@@ -102,7 +129,7 @@
       return;
     }
 
-    kintone.plugin.app.setConfig({ channelAccessToken: channelAccessToken, triggrType: triggrType, triggerField: triggerField, lineMessage: lineMessage }, () => {      
+    kintone.plugin.app.setConfig({ channelAccessToken: channelAccessToken, triggerType: triggerType, triggerField: triggerField, lineMessage: lineMessage, processedField: processedField }, () => {      
       swal({
         title: '更新しました。',
         text: '変更した設定を反映するには、「アプリの設定」画面に戻り 「アプリの更新」ボタンをクリックします。',
