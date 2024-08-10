@@ -1,6 +1,9 @@
 # Secret KEY
 *.ppk
 
+# local configuration
+.DS_Store
+
 # Logs
 logs
 *.log
